@@ -7,8 +7,14 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean install'
                 echo 'Building..'
+                script {
+                    maven {
+                        goals('clean')
+                        goals('install')
+                        properties skipTests: true
+                    }
+                }
             }
         }
         stage('Test') {
