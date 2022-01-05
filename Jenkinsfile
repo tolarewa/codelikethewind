@@ -10,11 +10,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                maven {
+                script {
+                    maven {
                         goals('clean')
                         goals('install')
                         properties skipTests: true
                     }
+                }
             }
         }
         stage('Test') {
