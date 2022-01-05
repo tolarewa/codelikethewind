@@ -25,7 +25,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         openshift.withProject("test-project") {
-                            openshift.newApp('https://github.com/tolarewaju3/codelikethewind.git').narrow('svc').expose()
+                            openshift.newApp('https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
             }
           }
         }
