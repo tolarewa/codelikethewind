@@ -24,7 +24,7 @@ pipeline {
                 echo 'Deploying....'
                 script {
                     def findByAll = openshift.selector( "all", "[  'app' : 'codelikethewind' ]")
-                    def appExists = templateSelector.exists()
+                    def appExists = findByAll.exists()
 
                     if (appExists) {
 
