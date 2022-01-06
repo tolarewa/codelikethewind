@@ -33,9 +33,9 @@ pipeline {
                 openshift.newApp('registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7~https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
 
               } else {
-                
+
                 def bc = openshift.selector( "bc", "codelikethewind")
-                bc.startbuild()
+                bc.startBuild()
 
               }
 
