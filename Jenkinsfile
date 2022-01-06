@@ -25,7 +25,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         openshift.withProject("rhn-gps-tolarewa-dev") {
-                            openshift.newApp('https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
+                            openshift.newApp('registry.access.redhat.com/jboss-eap-7/eap74-openjdk8-openshift-rhel7~https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
             }
           }
         }
