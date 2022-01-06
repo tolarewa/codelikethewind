@@ -26,17 +26,14 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject("rhn-gps-tolarewa-dev") {
 
-              def findByAll = openshift.selector("all", ['app': 'codelikethewind'])
-              def appExists = findByAll.exists()
+              def app = openshift.selector("all", ['app': 'codelikethewind'])
 
-              if (!appExists) {
-                openshift.newApp('registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7~https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
-
-              } else {
-
+              if(app.exists()){
                 def bc = openshift.selector( "bc", "codelikethewind")
                 bc.startBuild()
-
+              }
+              else{
+                openshift.newApp('registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7~https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
               }
 
             }
