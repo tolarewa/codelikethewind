@@ -24,7 +24,7 @@ pipeline {
                 echo 'Deploying....'
                 script {
                     openshift.withCluster() {
-                        openshift.withProject("test-project") {
+                        openshift.withProject("rhn-gps-tolarewa-dev") {
                             openshift.newApp('https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
             }
           }
