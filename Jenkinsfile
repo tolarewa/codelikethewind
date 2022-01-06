@@ -23,22 +23,25 @@ pipeline {
             steps {
                 echo 'Deploying....'
                 script {
-                    def findByAll = openshift.selector( "all", "[  'app' : 'codelikethewind' ]")
-                    def appExists = findByAll.exists()
-
-                    if (appExists) {
-
-                        openshift.withCluster() {
+                    openshift.withCluster() {
                         openshift.withProject("rhn-gps-tolarewa-dev") {
+
+                        def findByAll = openshift.selector( "all", "[  'app' : 'codelikethewind' ]")
+                        def appExists = findByAll.exists()
+
+                        if (!appExists) {
                             openshift.newApp('registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7~https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
+
                         }
+                        else{
+                            openshift.startbuild("codelikethewind")
+                        }
+      
                     }
 
-
-                    }
                 }
             }
         }
     }
-
+}
 }
