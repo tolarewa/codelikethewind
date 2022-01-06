@@ -26,7 +26,7 @@ pipeline {
                     openshift.withCluster() {
                         openshift.withProject("rhn-gps-tolarewa-dev") {
 
-                        def findByAll = openshift.selector( "all", "[  'app' : 'codelikethewind' ]")
+                        def findByAll = openshift.selector( "all", [  'app' : 'codelikethewind' ])
                         def appExists = findByAll.exists()
 
                         if (!appExists) {
