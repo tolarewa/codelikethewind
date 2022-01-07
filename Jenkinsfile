@@ -13,10 +13,21 @@ pipeline {
         sh 'mvn clean install'
       }
     }
-    stage('Test') {
+    stage('Create Image') {
       steps {
         echo 'Testing..'
-        //sh 'mvn clean install'
+        
+        script {
+          openshift.withCluster() {
+            openshift.withProject("rhn-gps-tolarewa-dev") {
+                openshift.newBuild("--name=codelikethewind", "--docker-image=registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7", "--binary")
+
+                openshift.selector("bc", "codelikethewind").startBuild("--from-file=target/simple-servlet-0.0.1-SNAPSHOT.war", "--wait")
+
+            }
+
+          }
+        }
       }
     }
     stage('Deploy') {
@@ -26,15 +37,7 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject("rhn-gps-tolarewa-dev") {
 
-              def app = openshift.selector("all", ['app': 'codelikethewind'])
-
-              if(app.exists()){
-                def bc = openshift.selector( "bc", "codelikethewind")
-                bc.startBuild()
-              }
-              else{
-                openshift.newApp('registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7~https://github.com/tolarewaju3/codelikethewind.git#jenkinsfile', "--strategy=source").narrow('svc').expose()
-              }
+              openshift.newApp("codelikethewind:latest", "--name=codelikethewind").narrow('svc').expose()
 
             }
 
