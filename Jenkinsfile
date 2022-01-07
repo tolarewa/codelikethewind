@@ -22,11 +22,11 @@ pipeline {
             openshift.withProject("rhn-gps-tolarewa-dev") {
                 def buildConfigExists = openshift.selector("bc", ['app': 'codelikethewind']).exists()
 
-                if(buildConfigExists){
-                    openshift.newBuild("--name=codelikethewind", "--docker-image=registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7", "--binary", "--follow")
+                if(!buildConfigExists){
+                    openshift.newBuild("--name=codelikethewind", "--docker-image=registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7", "--binary")
                 }
 
-                openshift.selector("bc", "codelikethewind").startBuild("--from-file=target/simple-servlet-0.0.1-SNAPSHOT.war", "--logs")
+                openshift.selector("bc", "codelikethewind").startBuild("--from-file=target/simple-servlet-0.0.1-SNAPSHOT.war", "--wait")
 
             }
 
