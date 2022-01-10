@@ -41,16 +41,16 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject("rhn-gps-tolarewa-dev") {
 
-              def deploymentExists = openshift.selector("dc", "codelikethewind").exists()
+              def deploymentExists = openshift.selector("deploy", "codelikethewind").exists()
 
               if(!deploymentExists){
                 echo 'Deployment doesnt exists'
                 openshift.newApp('codelikethewind').narrow('svc').expose()
               }
 
-              def rm = openshift.selector("dc", "codelikethewind")
+              def rm = openshift.selector("deploy", "codelikethewind")
               timeout(5) { 
-                openshift.selector("dc", "codelikethewind").related('pods').untilEach(1) {
+                openshift.selector("deploy", "codelikethewind").related('pods').untilEach(1) {
                   return (it.object().status.phase == "Running")
                   }
                 }
