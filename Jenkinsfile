@@ -47,9 +47,13 @@ pipeline {
                 echo 'Deployment doesnt exists'
                 openshift.newApp('codelikethewind').narrow('svc').expose()
               }
-              else{
-                echo 'Deployment exists'
-              }
+
+              def rm = openshift.selector("dc", "codelikethewind")
+              timeout(5) { 
+                openshift.selector("dc", "codelikethewind").related('pods').untilEach(1) {
+                  return (it.object().status.phase == "Running")
+                  }
+                }
 
             }
 
