@@ -47,7 +47,7 @@ pipeline {
                 openshift.newApp('codelikethewind').narrow('svc').expose()
               }
 
-              def rm = openshift.selector("dc", "codelikethewind").rollout().latest()
+              def rm = openshift.selector("dc", "codelikethewind")
                 timeout(5) { 
                   openshift.selector("dc", "codelikethewind").related('pods').untilEach(1) {
                     return (it.object().status.phase == "Running")
