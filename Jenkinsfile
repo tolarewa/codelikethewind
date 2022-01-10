@@ -44,7 +44,7 @@ pipeline {
               def deploymentExists = openshift.selector("dc", "codelikethewind").exists()
 
               if(!deploymentExists){
-                openshift.newApp('codelikethewind', "--strategy=source").narrow('svc').expose()
+                openshift.newApp('codelikethewind').narrow('svc').expose()
               }
               else{
 
