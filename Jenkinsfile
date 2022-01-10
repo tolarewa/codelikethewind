@@ -44,7 +44,6 @@ pipeline {
               def deployment = openshift.selector("dc", "codelikethewind")
 
               if(!deployment.exists()){
-                echo 'Deployment doesnt exists'
                 openshift.newApp('codelikethewind', "--as-deployment-config").narrow('svc').expose()
               }
 
