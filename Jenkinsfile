@@ -41,7 +41,7 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject("rhn-gps-tolarewa-dev") {
 
-              def deployment = openshift.selector("dc", "codelikethewind").exists()
+              def deployment = openshift.selector("dc", "codelikethewind")
 
               if(!deployment.exists()){
                 echo 'Deployment doesnt exists'
